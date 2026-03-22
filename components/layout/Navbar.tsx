@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
@@ -17,10 +17,28 @@ interface NavbarProps {
 export function Navbar({ onReset, isPremiumMode = false }: NavbarProps) {
     const settingsHref = isPremiumMode ? '/premium/settings' : '/settings';
     const [session, setSessionState] = useState<AuthSession | null>(null);
+    const [showZanImage, setShowZanImage] = useState(false);
+    const zanButtonRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
         setSessionState(getSession());
     }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (zanButtonRef.current && !zanButtonRef.current.contains(event.target as Node)) {
+                setShowZanImage(false);
+            }
+        };
+
+        if (showZanImage) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showZanImage]);
 
     const handleLogout = () => {
         clearSession();
@@ -97,12 +115,11 @@ export function Navbar({ onReset, isPremiumMode = false }: NavbarProps) {
                                     </button>
                                 </div>
                             )}
-                            <a
-                                href="https://github.com/KuekHaoYang/KVideo"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer hidden sm:flex overflow-hidden"
-                                aria-label="GitHub 仓库"
+                            <button
+                                ref={zanButtonRef}
+                                onClick={() => setShowZanImage(!showZanImage)}
+                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer hidden sm:flex overflow-hidden relative"
+                                aria-label="赞赏"
                             >
                                 <Image
                                     src="/zan.jpg"
@@ -111,7 +128,20 @@ export function Navbar({ onReset, isPremiumMode = false }: NavbarProps) {
                                     height={40}
                                     className="object-cover w-full h-full"
                                 />
-                            </a>
+                                {showZanImage && (
+                                    <div className="absolute top-full mt-2 right-0 z-50">
+                                        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)] p-2">
+                                            <Image
+                                                src="/zan-receive.jpg"
+                                                alt="赞赏码"
+                                                width={200}
+                                                height={200}
+                                                className="object-contain rounded-lg"
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                            </button>
                             <Link
                                 href={settingsHref}
                                 className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
