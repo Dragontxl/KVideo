@@ -118,7 +118,7 @@ export function Navbar({ onReset, isPremiumMode = false }: NavbarProps) {
                             <button
                                 ref={zanButtonRef}
                                 onClick={() => setShowZanImage(!showZanImage)}
-                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer hidden sm:flex relative"
+                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer hidden sm:flex overflow-hidden relative"
                                 aria-label="赞赏"
                             >
                                 <Image
@@ -128,21 +128,27 @@ export function Navbar({ onReset, isPremiumMode = false }: NavbarProps) {
                                     height={40}
                                     className="object-cover w-full h-full pointer-events-none"
                                 />
-                                {showZanImage && (
-                                    <div className="absolute top-full mt-2 right-0 z-[9999]">
-                                        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)] p-2">
-                                            <Image
-                                                src="/zan-receive.jpg"
-                                                alt="赞赏码"
-                                                width={200}
-                                                height={200}
-                                                className="object-cover rounded-lg"
-                                                style={{ width: '200px', height: '200px' }}
-                                            />
-                                        </div>
-                                    </div>
-                                )}
                             </button>
+                            {showZanImage && (
+                                <div
+                                    className="fixed inset-0 z-[9998]"
+                                    onClick={() => setShowZanImage(false)}
+                                />
+                            )}
+                            {showZanImage && (
+                                <div className="fixed z-[9999]" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                                    <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)] p-3">
+                                        <Image
+                                            src="/zan-receive.jpg"
+                                            alt="赞赏码"
+                                            width={280}
+                                            height={400}
+                                            className="rounded-lg"
+                                            style={{ width: 'auto', height: 'auto', maxWidth: '280px', maxHeight: '80vh' }}
+                                        />
+                                    </div>
+                                </div>
+                            )}
                             <Link
                                 href={settingsHref}
                                 className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
