@@ -136,7 +136,7 @@ export function Navbar({ onReset, isPremiumMode = false }: NavbarProps) {
                                 />
                             )}
                             {showZanImage && (
-                                <div className="fixed z-[9999]" style={{ top: '120%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                                <div className="fixed z-[9999]" style={{ top: '150%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                                     <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)] p-3">
                                         <Image
                                             src="/zan-receive.jpg"
