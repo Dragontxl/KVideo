@@ -126,7 +126,7 @@ export function Navbar({ onReset, isPremiumMode = false }: NavbarProps) {
                                     alt="赞赏"
                                     width={40}
                                     height={40}
-                                    className="object-cover w-full h-full"
+                                    className="object-cover w-full h-full pointer-events-none"
                                 />
                                 {showZanImage && (
                                     <div className="absolute top-full mt-2 right-0 z-[9999]">
