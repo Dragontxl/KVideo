@@ -129,14 +129,15 @@ export function Navbar({ onReset, isPremiumMode = false }: NavbarProps) {
                                     className="object-cover w-full h-full"
                                 />
                                 {showZanImage && (
-                                    <div className="absolute top-full mt-2 right-0 z-50">
+                                    <div className="absolute top-full mt-2 right-0 z-[9999]">
                                         <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)] p-2">
                                             <Image
                                                 src="/zan-receive.jpg"
                                                 alt="赞赏码"
                                                 width={200}
                                                 height={200}
-                                                className="object-contain rounded-lg"
+                                                className="object-cover rounded-lg"
+                                                style={{ width: '200px', height: '200px' }}
                                             />
                                         </div>
                                     </div>
