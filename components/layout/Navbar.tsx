@@ -144,7 +144,7 @@ export function Navbar({ onReset, isPremiumMode = false }: NavbarProps) {
                                             width={280}
                                             height={400}
                                             className="rounded-lg"
-                                            style={{ width: 'auto', height: 'auto', maxWidth: '280px', maxHeight: '80vh' }}
+                                            unoptimized
                                         />
                                     </div>
                                 </div>
