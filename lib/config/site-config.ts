@@ -15,10 +15,7 @@ export interface SiteConfig {
  * Note: NEXT_PUBLIC_ environment variables are statically embedded at build time
  */
 export const siteConfig: SiteConfig = {
-  // title: process.env.NEXT_PUBLIC_SITE_TITLE || "KVideo - 视频聚合平台",
-  // description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION || "视频聚合平台",
-  // name: process.env.NEXT_PUBLIC_SITE_NAME || "KVideo",
-  title: process.env.NEXT_PUBLIC_SITE_TITLE || "",
-  description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION || "",
-  name: process.env.NEXT_PUBLIC_SITE_NAME || "",
+  title: process.env.NEXT_PUBLIC_SITE_TITLE || "KVideo - 视频聚合平台",
+  description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION || "视频聚合平台",
+  name: process.env.NEXT_PUBLIC_SITE_NAME || "KVideo",
 };
