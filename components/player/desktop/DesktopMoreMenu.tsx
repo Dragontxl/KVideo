@@ -16,7 +16,6 @@ interface DesktopMoreMenuProps {
     onCopyLink: (type?: 'original' | 'proxy') => void;
     containerRef: React.RefObject<HTMLDivElement | null>;
     isRotated?: boolean;
-    src: string;
 }
 
 export function DesktopMoreMenu({
@@ -27,8 +26,7 @@ export function DesktopMoreMenu({
     onMouseLeave,
     onCopyLink,
     containerRef,
-    isRotated = false,
-    src
+    isRotated = false
 }: DesktopMoreMenuProps) {
     const {
         autoNextEpisode,
@@ -64,52 +62,6 @@ export function DesktopMoreMenu({
     const menuRef = React.useRef<HTMLDivElement>(null);
     const [menuPosition, setMenuPosition] = React.useState({ top: 0, left: 0, maxHeight: 'none', openUpward: false, align: 'right' as 'left' | 'right' });
     const [isAdFilterOpen, setAdFilterOpen] = React.useState(false);
-
-    const handleDownload = async () => {
-        try {
-            alert('正在准备下载，请稍候...');
-            
-            const response = await fetch(src);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const content = await response.text();
-            
-            if (content.includes('#EXTM3U')) {
-                const ffmpegCommand = `ffmpeg -i "${src}" -c copy video_${Date.now()}.mp4`;
-                
-                if (confirm(`检测到HLS流视频，需要使用专用工具下载。\n\n方法1：使用FFmpeg命令\n${ffmpegCommand}\n\n方法2：复制链接使用在线工具\n点击"确定"复制FFmpeg命令，点击"取消"复制视频链接`)) {
-                    await navigator.clipboard.writeText(ffmpegCommand);
-                    alert('FFmpeg命令已复制到剪贴板！');
-                } else {
-                    await navigator.clipboard.writeText(src);
-                    alert('视频链接已复制到剪贴板！您可以使用在线HLS下载工具。');
-                }
-                return;
-            }
-            
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `video_${Date.now()}.mp4`;
-            
-            document.body.appendChild(link);
-            link.click();
-            
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-            
-            setTimeout(() => {
-                alert('视频下载完成！');
-            }, 500);
-        } catch (error) {
-            console.error('下载失败:', error);
-            alert('下载失败，可能是跨域限制或网络问题。您可以尝试右键视频选择"视频另存为"来下载。');
-        }
-    };
 
     const AD_FILTER_LABELS: Record<string, string> = {
         off: '关闭',
@@ -367,15 +319,6 @@ export function DesktopMoreMenu({
                     <span>复制链接</span>
                 </button>
             )}
-
-            {/* Download Button */}
-            <button
-                onClick={() => handleDownload()}
-                className={`w-full ${isRotated ? 'px-2 py-1.5 text-[11px]' : 'px-3 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm'} text-left text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_15%,transparent)] rounded-[var(--radius-2xl)] transition-colors flex items-center gap-2 group-hover:gap-3 cursor-pointer`}
-            >
-                <Icons.Download size={isRotated ? 14 : 16} className="sm:w-[18px] sm:h-[18px]" />
-                <span>下载视频</span>
-            </button>
 
             {/* Divider */}
             <div className="h-px bg-[var(--glass-border)] my-1.5 sm:my-2" />

@@ -245,19 +245,19 @@ export function DesktopVideoPlayer({
             isProxied={src.includes('/api/proxy')}
             onToggleMoreMenu={() => actions.setShowMoreMenu(!data.showMoreMenu)}
             onMoreMenuMouseEnter={() => {
-                if (refs.moreMenuTimeoutRef.current) {
-                    clearTimeout(refs.moreMenuTimeoutRef.current);
-                    refs.moreMenuTimeoutRef.current = null;
-                }
+              if (refs.moreMenuTimeoutRef.current) {
+                clearTimeout(refs.moreMenuTimeoutRef.current);
+                refs.moreMenuTimeoutRef.current = null;
+              }
             }}
             onMoreMenuMouseLeave={() => {
-                if (refs.moreMenuTimeoutRef.current) {
-                    clearTimeout(refs.moreMenuTimeoutRef.current);
-                }
-                refs.moreMenuTimeoutRef.current = setTimeout(() => {
-                    actions.setShowMoreMenu(false);
-                    refs.moreMenuTimeoutRef.current = null;
-                }, 800); // Increased timeout for better stability
+              if (refs.moreMenuTimeoutRef.current) {
+                clearTimeout(refs.moreMenuTimeoutRef.current);
+              }
+              refs.moreMenuTimeoutRef.current = setTimeout(() => {
+                actions.setShowMoreMenu(false);
+                refs.moreMenuTimeoutRef.current = null;
+              }, 800); // Increased timeout for better stability
             }}
             onCopyLink={logic.handleCopyLink}
             // Speed Menu Props
@@ -270,8 +270,7 @@ export function DesktopVideoPlayer({
             onSpeedMenuMouseLeave={logic.startSpeedMenuTimeout}
             // Portal container
             containerRef={containerRef}
-            src={src}
-        />
+          />
 
           <DesktopControlsWrapper
             src={src}

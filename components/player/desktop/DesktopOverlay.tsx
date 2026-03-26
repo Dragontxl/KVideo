@@ -36,7 +36,6 @@ interface DesktopOverlayProps {
     onSpeedMenuMouseLeave: () => void;
     containerRef: React.RefObject<HTMLDivElement | null>;
     isRotated?: boolean;
-    src: string;
 }
 
 export function DesktopOverlay({
@@ -70,7 +69,6 @@ export function DesktopOverlay({
     onSpeedMenuMouseLeave,
     containerRef,
     isRotated = false,
-    src,
 }: DesktopOverlayProps) {
     // Show navigation buttons when controls are visible or when paused (controls usually show when paused anyway)
     const showNavButtons = showControls || !isPlaying;
@@ -88,7 +86,6 @@ export function DesktopOverlay({
                     onCopyLink={onCopyLink}
                     containerRef={containerRef}
                     isRotated={isRotated}
-                    src={src}
                 />
             </div>
 
