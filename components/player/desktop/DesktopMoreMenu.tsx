@@ -67,11 +67,26 @@ export function DesktopMoreMenu({
 
     const handleDownload = async () => {
         try {
-            alert('正在下载视频，请稍候...');
+            alert('正在准备下载，请稍候...');
             
             const response = await fetch(src);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const content = await response.text();
+            
+            if (content.includes('#EXTM3U')) {
+                const ffmpegCommand = `ffmpeg -i "${src}" -c copy video_${Date.now()}.mp4`;
+                
+                if (confirm(`检测到HLS流视频，需要使用专用工具下载。\n\n方法1：使用FFmpeg命令\n${ffmpegCommand}\n\n方法2：复制链接使用在线工具\n点击"确定"复制FFmpeg命令，点击"取消"复制视频链接`)) {
+                    await navigator.clipboard.writeText(ffmpegCommand);
+                    alert('FFmpeg命令已复制到剪贴板！');
+                } else {
+                    await navigator.clipboard.writeText(src);
+                    alert('视频链接已复制到剪贴板！您可以使用在线HLS下载工具。');
+                }
+                return;
             }
             
             const blob = await response.blob();
