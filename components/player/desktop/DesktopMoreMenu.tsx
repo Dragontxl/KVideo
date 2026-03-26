@@ -16,6 +16,7 @@ interface DesktopMoreMenuProps {
     onCopyLink: (type?: 'original' | 'proxy') => void;
     containerRef: React.RefObject<HTMLDivElement | null>;
     isRotated?: boolean;
+    src: string;
 }
 
 export function DesktopMoreMenu({
@@ -26,7 +27,8 @@ export function DesktopMoreMenu({
     onMouseLeave,
     onCopyLink,
     containerRef,
-    isRotated = false
+    isRotated = false,
+    src
 }: DesktopMoreMenuProps) {
     const {
         autoNextEpisode,
@@ -62,6 +64,32 @@ export function DesktopMoreMenu({
     const menuRef = React.useRef<HTMLDivElement>(null);
     const [menuPosition, setMenuPosition] = React.useState({ top: 0, left: 0, maxHeight: 'none', openUpward: false, align: 'right' as 'left' | 'right' });
     const [isAdFilterOpen, setAdFilterOpen] = React.useState(false);
+
+    const handleDownload = async () => {
+        try {
+            // 显示下载开始的提示
+            alert('开始下载视频...');
+            
+            // 创建下载链接
+            const link = document.createElement('a');
+            link.href = src;
+            link.download = `video_${Date.now()}.mp4`;
+            link.target = '_blank';
+            
+            // 触发下载
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // 显示下载完成的提示
+            setTimeout(() => {
+                alert('视频下载已开始，请稍候...');
+            }, 1000);
+        } catch (error) {
+            console.error('下载失败:', error);
+            alert('下载失败，请稍后重试');
+        }
+    };
 
     const AD_FILTER_LABELS: Record<string, string> = {
         off: '关闭',
@@ -319,6 +347,15 @@ export function DesktopMoreMenu({
                     <span>复制链接</span>
                 </button>
             )}
+
+            {/* Download Button */}
+            <button
+                onClick={() => handleDownload()}
+                className={`w-full ${isRotated ? 'px-2 py-1.5 text-[11px]' : 'px-3 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm'} text-left text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_15%,transparent)] rounded-[var(--radius-2xl)] transition-colors flex items-center gap-2 group-hover:gap-3 cursor-pointer`}
+            >
+                <Icons.Download size={isRotated ? 14 : 16} className="sm:w-[18px] sm:h-[18px]" />
+                <span>下载视频</span>
+            </button>
 
             {/* Divider */}
             <div className="h-px bg-[var(--glass-border)] my-1.5 sm:my-2" />
