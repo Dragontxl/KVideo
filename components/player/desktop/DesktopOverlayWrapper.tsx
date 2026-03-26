@@ -99,6 +99,7 @@ export function DesktopOverlayWrapper({
             onSpeedMenuMouseLeave={onSpeedMenuMouseLeave}
             containerRef={containerRef}
             isRotated={isRotated}
+            src={src}
         />
     );
 }
