@@ -67,27 +67,32 @@ export function DesktopMoreMenu({
 
     const handleDownload = async () => {
         try {
-            // 显示下载开始的提示
-            alert('开始下载视频...');
+            alert('正在下载视频，请稍候...');
             
-            // 创建下载链接
+            const response = await fetch(src);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            
             const link = document.createElement('a');
-            link.href = src;
+            link.href = url;
             link.download = `video_${Date.now()}.mp4`;
-            link.target = '_blank';
             
-            // 触发下载
             document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link);
             
-            // 显示下载完成的提示
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            
             setTimeout(() => {
-                alert('视频下载已开始，请稍候...');
-            }, 1000);
+                alert('视频下载完成！');
+            }, 500);
         } catch (error) {
             console.error('下载失败:', error);
-            alert('下载失败，请稍后重试');
+            alert('下载失败，可能是跨域限制或网络问题。您可以尝试右键视频选择"视频另存为"来下载。');
         }
     };
 
